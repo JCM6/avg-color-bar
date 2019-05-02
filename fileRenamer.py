@@ -1,6 +1,6 @@
 import os
 
-inputPath = "C:\\Users\\jeffrey.moody\\Documents\\GitHub\\avg-color-bar\\input"
+inputPath = "C:\\Users\\jeffrey.moody\\Documents\\GitHub\\avg-color-bar\\images"
 
 for filename in os.listdir(inputPath):
     if filename.startswith("frame"):
