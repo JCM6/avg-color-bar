@@ -6,6 +6,7 @@ vidn = 'scarif'
 vidName = vidn + ".mp4"
 absolueVidPath = "C:\\Users\\jeffrey.moody\\Documents\\GitHub\\avg-color-bar\\video\\" + vidName
 vid = cv2.VideoCapture(absolueVidPath)
+maxFrames = 200
 
 try:
         #creation of the destination directory
@@ -21,7 +22,7 @@ while(True):
     #read current frame
     ret, frame = vid.read()
 
-    if ret:
+    if ret and currentframe < (maxFrames + 1):
             #checks to see if there are more frames to go.
             name = './data/frame' + str(currentframe) + '.jpg'
             print ('Creating...' + name)
