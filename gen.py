@@ -15,7 +15,7 @@ def genAvgRGB(img):
 	colors = img.getcolors(img.size[0] * img.size[1])
 	
 	#one line average
-	avg = tuple([sum([y[1][x] * y[0] for y in colors]) / sum([z[0] for z in colors]) for x in range(3)])
+	avg = tuple([sum([y[1][x] * y[0] for y in colors]) // sum([z[0] for z in colors]) for x in range(3)])
 	
 	return avg
 
@@ -28,10 +28,10 @@ def genAvgHSV(img):
 	colors = img.getcolors(img.size[0] * img.size[1])
 	
 	#converting colors to hsv
-	colors = [(w,colorsys.rgb_to_hls(*[y / 255. for y in x])) for w,x in colors]
+	colors = [(w,colorsys.rgb_to_hls(*[y // 255. for y in x])) for w,x in colors]
 	
 	#one line average
-	avg = [sum([y[1][x] * y[0] for y in colors]) / sum([z[0] for z in colors]) for x in range(3)]
+	avg = [sum([y[1][x] * y[0] for y in colors]) // sum([z[0] for z in colors]) for x in range(3)]
 	
 	#converting back to rgb
 	avg = colorsys.hsv_to_rgb(*avg)
@@ -43,7 +43,7 @@ def genAvgHue(img):
 	
 	#getting average hsv
 	avgHSV = genAvgHSV(img)
-	avgHSV = colorsys.rgb_to_hsv(*[x/255. for x in avgHSV])
+	avgHSV = colorsys.rgb_to_hsv(*[x//255. for x in avgHSV])
 	
 	#highest value and saturation
 	avgHSV = [avgHSV[0], 1.0, 1.0]
@@ -99,7 +99,7 @@ def kmeans(img):
 			
 		
 		#calculate new centers - in a one liner for some reason, prolly so its harder for me to understand im the future or something
-		centers = [tuple([sum([y[1][x] * y[0] for y in group]) / sum([z[0] for z in group]) for x in range(3)]) for group in colorGroups]
+		centers = [tuple([sum([y[1][x] * y[0] for y in group]) // sum([z[0] for z in group]) for x in range(3)]) for group in colorGroups]
 		
 			
 		#print centers
@@ -111,7 +111,6 @@ def kmeans(img):
 		if diff < 4:
 			break
 	
-	#print [sum([y[0] for y in colorGroups[x]]) for x in range(numCenters)],sorted(range(numCenters), key = lambda x: sum([y[0] for y in colorGroups[x]]))
 		
 	#getting group with largest number of colors
 	return centers[sorted(range(numCenters), key = lambda x: sum([y[0] for y in colorGroups[x]]))[-1]]
@@ -132,7 +131,7 @@ if not os.path.isdir("images"):
 	
 	
 #the title of the image
-title = "got-s08e03"
+title = "gogandalf"
 
 
 #choose what method to get the color
@@ -168,7 +167,8 @@ for img in images:
 	barColors.append(color)
 	
 #creating bar image
-barImg = Image.new("RGB",(len(barColors), max([1,int(len(barColors)/2.5)])))
+#Added a // in order to force the division result to be int rather than float.
+barImg = Image.new("RGB",(len(barColors), max([1,int(len(barColors)//2.5)])))
 print(barImg)
 
 #adding bars to the image
