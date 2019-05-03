@@ -128,8 +128,7 @@ if not os.path.isdir("images"):
 
 
 	
-	
-	
+
 #the title of the image
 title = "gogandalf"
 
