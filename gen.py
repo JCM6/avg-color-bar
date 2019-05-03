@@ -171,7 +171,7 @@ for img in images:
 barImg = Image.new("RGB",(len(barColors), max([1,int(len(barColors)/2.5)])))
 
 #adding bars to the image
-barFullData = [x for x in int(barColors)] * barImg.size[1]
+barFullData = [x for x in barColors] * barImg.size[1]
 barImg.putdata(barFullData)
 
 #saving image
