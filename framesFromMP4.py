@@ -2,8 +2,9 @@ import os
 import sys
 import cv2
 
-
-absolueVidPath = "C:\\Users\\jeffrey.moody\\Documents\\GitHub\\avg-color-bar\\video\\sarif.mp4"
+vidn = 'scarif'
+vidName = vidn + ".mp4"
+absolueVidPath = "C:\\Users\\jeffrey.moody\\Documents\\GitHub\\avg-color-bar\\video\\" + vidName
 vid = cv2.VideoCapture(absolueVidPath)
 
 try:
