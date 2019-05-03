@@ -1,6 +1,7 @@
 import os
 import sys
 import cv2
+import frameRenamer as fr
 
 vidn = 'scarif'
 vidName = vidn + ".mp4"
@@ -10,7 +11,8 @@ try:
     vid = cv2.VideoCapture(absolueVidPath)
 
 except OSError:
-    print('Error: Unable to open/find the file specified')
+    print('Error: Unable to open/find the file specified.')
+
 except:
     print('Error: Make sure the file is in the video directory.')
 
@@ -26,36 +28,59 @@ except ZeroDivisionError:
     print('Yeah dividing by zero is bad. The universe does not like that.')
     
 
-modul = 50
+modul = 1
 percentToConvert = (modul/100)
 
 maxFrames = int(totalFrameCount * percentToConvert)
 print('Maximum Frames: ' + str(maxFrames))
-
+print('Starting video file processing.......')
 try:
         #creation of the destination directory
         if not os.path.exists('data'):
             os.makedirs('data')
+        print('Creating data directory for first run')
+
 except OSError:
     print('Error: Creating directory of data.')
+    print('Error caused by an issue creating the data folder for the first time.')
 
+#Start Frame
 currentframe = 0
 
 while(True):
 
-    #read current frame
+    #Read current frame
     ret, frame = vid.read()
 
+    #Iterate through frames until max frame count is reached.
     if ret and currentframe < (maxFrames + 1):
-            #checks to see if there are more frames to go.
+
             name = './data/frame' + str(currentframe) + '.jpg'
             print ('Creating...' + name)
 
-            #write extracted images
+            #Write extracted frames
             cv2.imwrite(name, frame)
             currentframe += 1
     else:
+        print('Extracting frames is complete.')
         break
 
-vid.release()
-cv2.destroyAllWindows()
+try:
+    vid.release()
+    cv2.destroyAllWindows()
+    print('cv2 Window Successfully Cleared')
+
+except:
+    print('Something went wrong releasing the video.')
+
+print('Starting file renaming now........')
+dataPath = 'data\\'
+outputPath = "images\\"
+itr = 0
+
+for filename in os.listdir(dataPath):
+    destination = outputPath + str(itr) + '.png'
+    source = dataPath + filename
+    os.rename(source, destination)
+    itr += 1
+
