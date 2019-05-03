@@ -8,9 +8,12 @@ import sys
 import cv2
 import frameRenamer as fr
 
+percEntered = 50
 vidn = 'scarif'
+method = "kmeans"
 vidName = vidn + ".mp4"
-absolueVidPath = "C:\\Users\\jeffrey.moody\\Documents\\GitHub\\avg-color-bar\\video\\" + vidName
+absolueVidPath = "video\\" + vidName
+
 
 try:
     vid = cv2.VideoCapture(absolueVidPath)
@@ -33,7 +36,7 @@ except ZeroDivisionError:
     print('Yeah dividing by zero is bad. The universe does not like that.')
     
 
-modul = 1
+modul = percEntered
 percentToConvert = (modul/100)
 
 maxFrames = int(totalFrameCount * percentToConvert)
@@ -211,7 +214,6 @@ if not os.path.isdir("images"):
         os.mkdir("images")
 
 
-	
 
 #the title of the image
 title = "generatedBarcode"
@@ -219,7 +221,7 @@ title = "generatedBarcode"
 
 #choose what method to get the color
 #options: rgb, hsv, hue, kmeans, common
-method = "kmeans"
+
 
 #getting images - images must be number only filenames
 images = ["images/"+x for x in os.listdir("images/")]
