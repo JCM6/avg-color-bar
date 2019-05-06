@@ -14,7 +14,25 @@ vidn = 'scarif'
 method = "kmeans"
 vidName = vidn + ".mp4"
 absolueVidPath = "video\\" + vidName
+dataPath = 'data\\'
+outputPath = "images\\"
+itr = 0
 
+#the title of the image
+title = "generatedBarcode"
+
+#Remove images from previous creation
+print('Cleaning up past incomplete runs......')
+for imageFile in os.listdir(outputPath):
+	cImagePath = os.path.join(outputPath, imageFile)
+	try:
+		if os.path.isfile(cImagePath):
+			os.unlink(cImagePath)
+	except Exception as e:
+			print(e)
+
+print('Completed cleanup.')
+print('Starting image capture.')
 
 try:
     vid = cv2.VideoCapture(absolueVidPath)
@@ -43,6 +61,7 @@ percentToConvert = (modul/100)
 maxFrames = int(totalFrameCount * percentToConvert)
 print('Maximum Frames: ' + str(maxFrames))
 print('Starting video file processing.......')
+
 try:
         #creation of the destination directory
         if not os.path.exists('data'):
@@ -65,7 +84,7 @@ while(True):
     if ret and currentframe < (maxFrames + 1):
 
             name = './data/frame' + str(currentframe) + '.jpg'
-            print ('Creating...' + name)
+            print ('Extracting...' + name)
 
             #Write extracted frames
             cv2.imwrite(name, frame)
@@ -83,19 +102,17 @@ except:
     print('Something went wrong releasing the video.')
 
 print('Starting file renaming now........')
-dataPath = 'data\\'
-outputPath = "images\\"
-itr = 0
-
-print('File Renaming complete!')
-print('Starting barcode generation......')
-
 for filename in os.listdir(dataPath):
     destination = outputPath + str(itr) + '.png'
     source = dataPath + filename
     os.rename(source, destination)
     itr += 1
+	
+print('File Renaming complete!')
+print('Number of files renamed: ' + str(itr))
 
+
+print('Starting barcode generation......')
 
 def genAvgRGB(img):
 	
@@ -217,12 +234,6 @@ def getCommon(img):
 if not os.path.isdir("images"):
         os.mkdir("images")
 
-
-
-#the title of the image
-title = "generatedBarcode"
-
-
 #choose what method to get the color
 #options: rgb, hsv, hue, kmeans, common
 
@@ -236,7 +247,7 @@ barColors = []
 
 #getting the color for each frame
 for img in images:
-	print(img) 
+	print('Processing......' + img) 
 	img = Image.open(img).resize((25,25))
 	
 	#applying correct method
@@ -258,7 +269,6 @@ for img in images:
 #creating bar image
 #Added a // in order to force the division result to be int rather than float.
 barImg = Image.new("RGB",(len(barColors), max([1,int(len(barColors)//2.5)])))
-print(barImg)
 
 #adding bars to the image
 barFullData = [x for x in barColors] * barImg.size[1]
@@ -271,6 +281,8 @@ barImg.save("{}_{}.png".format(title,method))
 print('Barcode successfully created!')
 print('Starting image cleanup.......')
 
+
+
 for imageFile in os.listdir(outputPath):
 	cImagePath = os.path.join(outputPath, imageFile)
 	try:
@@ -278,5 +290,6 @@ for imageFile in os.listdir(outputPath):
 			os.unlink(cImagePath)
 	except Exception as e:
 			print(e)
-			
-print('Image frames usede for generatring the barcode have been removed.')
+
+print('Image frames used for generatring the barcode have been removed.')
+print('Number of image files removed: ' + str(itr))
