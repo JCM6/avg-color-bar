@@ -7,6 +7,7 @@ import os
 import sys
 import cv2
 import frameRenamer as fr
+import shutil
 
 percEntered = 50
 vidn = 'scarif'
@@ -85,6 +86,9 @@ print('Starting file renaming now........')
 dataPath = 'data\\'
 outputPath = "images\\"
 itr = 0
+
+print('File Renaming complete!')
+print('Starting barcode generation......')
 
 for filename in os.listdir(dataPath):
     destination = outputPath + str(itr) + '.png'
@@ -264,3 +268,15 @@ barImg.putdata(barFullData)
 barImg.save("{}_{}.png".format(title,method))
 #barImg.show()
 
+print('Barcode successfully created!')
+print('Starting image cleanup.......')
+
+for imageFile in os.listdir(outputPath):
+	cImagePath = os.path.join(outputPath, imageFile)
+	try:
+		if os.path.isfile(cImagePath):
+			os.unlink(cImagePath)
+	except Exception as e:
+			print(e)
+			
+print('Image frames usede for generatring the barcode have been removed.')

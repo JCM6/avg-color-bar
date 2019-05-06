@@ -84,3 +84,8 @@ for filename in os.listdir(dataPath):
     os.rename(source, destination)
     itr += 1
 
+print('File renaming complete!')
+print('Staring histogram processing......')
+
+
+
